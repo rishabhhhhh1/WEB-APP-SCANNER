@@ -1,0 +1,6 @@
+flask for backend 
+requests for handling https sessions
+urllib3 web parsing utilities
+WeasyPrint for pdf generation
+beautifulsoup html parsing and extraction
+lxml

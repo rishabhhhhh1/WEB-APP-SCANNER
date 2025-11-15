@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WebAppScanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">WebApp<span class="highlight">Scanner</span></a>
+                <a href="/signup" class="btn btn-tertiary">Sign Up</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="scan-container">
+            <h2>Login to Your Account</h2>
+            <form id="login-form">
+                <label for="email">Email:</label>
+                <div class="input-group">
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+                <br>
+                <label for="password">Password:</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" required placeholder="Your Password">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p id="error-message" style="color: red; margin-top: 15px;"></p>
+            </form>
+        </div>
+    </main>
+
+    <script type="module">
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDietl_rT9JvgMr58t86yho93l9EQmmGPM",
+        authDomain: "webappscanner-auth.firebaseapp.com",
+        projectId: "webappscanner-auth",
+        storageBucket: "webappscanner-auth.appspot.com",
+        messagingSenderId: "525787109456",
+        appId: "1:525787109456:web:ef8f218e8a2babde4d9955",
+        measurementId: "G-ZCC272RLKH"
+      };
+
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // --- Login Logic ---
+      const loginForm = document.getElementById('login-form');
+      const errorMessage = document.getElementById('error-message');
+
+      loginForm.addEventListener('submit', (e) => {
+          e.preventDefault(); // Prevent form submission
+
+          const email = loginForm.email.value;
+          const password = loginForm.password.value;
+
+          // Use the Firebase Auth function to sign in
+          signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  // Signed in successfully
+                  const user = userCredential.user;
+                  console.log('Successfully logged in:', user);
+
+                  // Set the flag to show the welcome message on the next page
+                  sessionStorage.setItem('showWelcome', 'true');
+
+                  // Redirect to the main scanner page
+                  window.location.href = '/scan';
+              })
+              .catch((error) => {
+                  // Handle Errors here.
+                  const errorCode = error.code;
+                   const friendlyMessage = errorCode.replace('auth/', '').replace(/-/g, ' ');
+                  errorMessage.textContent = `Error: ${friendlyMessage}`;
+                  console.error('Login Error:', error);
+              });
+      });
+    </script>    
+
+</body>
+</html>
+

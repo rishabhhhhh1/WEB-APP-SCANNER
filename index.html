@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Report - WebAppScanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Welcome Modal Structure -->
+    <div id="welcome-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Welcome to WebAppScanner!</h2>
+            <p>You're all set to start securing your web applications. Enter a URL below to begin your first scan.</p>
+            <button id="close-modal-btn" class="btn btn-primary">Start Scanning</button>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">WebApp<span class="highlight">Scanner</span></a>
+                <a href="/scan" class="btn btn-tertiary">New Scan</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="scan-container">
+            <h2>Website Security Scanner</h2>
+            <form method="POST" action="/scan">
+                <label for="url">Enter the full URL to scan:</label>
+                <div class="input-group">
+                    <input type="text" id="url" name="url" required placeholder="https://example.com" value="{{ url if url }}">
+                    <button type="submit" class="btn btn-primary">Scan Now</button>
+                </div>
+            </form>
+            {% if error %}
+                <div class="results-section">
+                    <div class="result-card critical">
+                        <h4>Scan Error</h4>
+                        <p><strong>Details:</strong> {{ error }}</p>
+                        <p>Please check the URL and try again. If the problem persists, the website might be offline or actively blocking scanners.</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% if scan_limit_message %}
+                <div class="result-card info" style="margin-bottom: 30px;">
+                    <h4>Scan Scope Note</h4>
+                    <p>{{ scan_limit_message }}</p>
+                </div>
+            {% endif %}
+
+            {% if results %}
+                <div class="results-section">
+                    <h3>Scan Report for: <span class="highlight">{{ results.url }}</span></h3>
+
+                    <!-- Result Cards -->
+                    <div class="result-card {{ results.sql_injection.severity }}">
+                        <h4>SQL Injection</h4>
+                        <p><strong>Finding:</strong> {{ results.sql_injection.finding }}</p>
+                        <p><strong>Details:</strong> {{ results.sql_injection.details }}</p>
+                        <p><strong>Recommendation:</strong> {{ results.sql_injection.recommendation }}</p>
+                    </div>
+                    <div class="result-card {{ results.xss.severity }}">
+                        <h4>Cross-Site Scripting (XSS)</h4>
+                        <p><strong>Finding:</strong> {{ results.xss.finding }}</p>
+                        <p><strong>Details:</strong> {{ results.xss.details }}</p>
+                        <p><strong>Recommendation:</strong> {{ results.xss.recommendation }}</p>
+                    </div>
+                    <div class="result-card {{ results.headers.severity }}">
+                        <h4>Security Headers</h4>
+                        <p><strong>Finding:</strong> {{ results.headers.finding }}</p>
+                        <p><strong>Details:</strong> {{ results.headers.details }}</p>
+                        <p><strong>Recommendation:</strong> {{ results.headers.recommendation }}</p>
+                    </div>
+                    <div class="result-card {{ results.ssl_cert.severity }}">
+                        <h4>SSL/TLS Certificate</h4>
+                        <p><strong>Finding:</strong> {{ results.ssl_cert.finding }}</p>
+                        <p><strong>Details:</strong> {{ results.ssl_cert.details }}</p>
+                        <p><strong>Recommendation:</strong> {{ results.ssl_cert.recommendation }}</p>
+                    </div>
+                    <div class="result-card {{ results.open_ports.severity }}">
+                        <h4>Open Ports</h4>
+                        <p><strong>Finding:</strong> {{ results.open_ports.finding }}</p>
+                        <p><strong>Details:</strong> {{ results.open_ports.details }}</p>
+                        <p><strong>Recommendation:</strong> {{ results.open_ports.recommendation }}</p>
+                    </div>
+                    <div class="result-card info">
+                        <h4>HTTP Status Code</h4>
+                        <p><strong>Finding:</strong> The server returned a status code of {{ results.status_code }}.</p>
+                    </div>
+
+                    <form class="pdf-download-form" method="POST" action="/generate_pdf">
+                        <button type="submit" class="btn btn-secondary">Download Report as PDF</button>
+                    </form>
+                </div>
+
+                <!-- NEW: Scan Methodology Tabs Section -->
+                <div class="methodology-section">
+                    <h3>Scan Methodology</h3>
+                    <div class="methodology-tabs">
+                        <button class="methodology-tab-btn active" data-tab="sqli_xss">SQLi & XSS</button>
+                        <button class="methodology-tab-btn" data-tab="headers">Headers</button>
+                        <button class="methodology-tab-btn" data-tab="ssl">SSL/TLS</button>
+                        <button class="methodology-tab-btn" data-tab="ports">Open Ports</button>
+                    </div>
+                    <div class="methodology-content">
+                        <div id="sqli_xss" class="methodology-content-panel active">
+                            <h4>SQL & XSS Detection</h4>
+                            <p>Utilizes <strong>BeautifulSoup</strong> to crawl the site and discover all forms and links. The <strong>Requests</strong> library is then used to perform a hybrid attack, testing each discovered URL parameter and form input field individually for vulnerabilities.</p>
+                        </div>
+                        <div id="headers" class="methodology-content-panel">
+                            <h4>Security Header Analysis</h4>
+                            <p>The <strong>Requests</strong> library inspects the server's HTTP response. It checks for the presence of critical security headers like CSP and HSTS as recommended by security best practices.</p>
+                        </div>
+                        <div id="ssl" class="methodology-content-panel">
+                            <h4>SSL/TLS Certificate Scan</h4>
+                            <p>Uses Python's built-in <strong>SSL</strong> and <strong>Socket</strong> modules. It first checks if the site uses HTTPS and then establishes a secure connection to the server to validate the certificate's trust chain and validity.</p>
+                        </div>
+                        <div id="ports" class="methodology-content-panel">
+                            <h4>Open Ports Scan</h4>
+                            <p>Employs the <strong>Socket</strong> module to attempt connections to a list of common, high-risk network ports. This identifies services that are unnecessarily exposed to the internet, which could increase the attack surface.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Gemini Assistant Chatbot -->
+        <div id="chat-container" class="chat-container">
+            <div id="chat-header" class="chat-header">
+                <h3>Security Assistant</h3>
+                <button id="close-chat" class="close-chat-btn">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask about your results...">
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+        <button id="chat-toggle-btn" class="chat-toggle-btn">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+    </main>
+
+    <script>
+        // Welcome Modal Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const showWelcome = sessionStorage.getItem('showWelcome');
+            const modal = document.getElementById('welcome-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            if (showWelcome === 'true') {
+                modal.style.display = 'flex';
+                sessionStorage.removeItem('showWelcome');
+            }
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+
+        // Methodology Tabs Logic
+        const tabs = document.querySelectorAll('.methodology-tab-btn');
+        const panels = document.querySelectorAll('.methodology-content-panel');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Gemini Assistant Logic
+        const chatContainer = document.getElementById('chat-container');
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const closeChatBtn = document.getElementById('close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        chatToggleBtn.addEventListener('click', () => chatContainer.classList.toggle('open'));
+        closeChatBtn.addEventListener('click', () => chatContainer.classList.remove('open'));
+        function addMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', `${sender}-message`);
+            messageElement.innerHTML = message.replace(/\n/g, '<br>');
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (userMessage === '') return;
+            addMessage('user', userMessage);
+            chatInput.value = '';
+            addMessage('bot', 'Thinking...');
+            try {
+                const response = await fetch('/ask_assistant', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMessage }),
+                });
+                chatMessages.removeChild(chatMessages.lastChild);
+                if (!response.ok) throw new Error('Network response was not ok.');
+                const data = await response.json();
+                addMessage('bot', data.response || "Sorry, I received an empty response.");
+            } catch (error) {
+                chatMessages.removeChild(chatMessages.lastChild);
+                addMessage('bot', `Sorry, something went wrong.`);
+                console.error('Error with assistant:', error);
+            }
+        }
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+        addMessage('bot', 'Hello! Ask me anything about your scan results.');
+    </script>
+    <!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-text">Scanning in progress…</p>
+</div>
+
+<script>
+  // Show loader when scan starts
+  function showLoader() {
+    document.getElementById("loadingOverlay").style.display = "flex";
+  }
+
+  // Hide loader when scan completes
+  function hideLoader() {
+    document.getElementById("loadingOverlay").style.display = "none";
+  }
+
+  // Attach loader to scan form submission
+  document.addEventListener("DOMContentLoaded", () => {
+    const scanForm = document.querySelector("form"); // adjust selector if needed
+    if (scanForm) {
+      scanForm.addEventListener("submit", () => {
+        showLoader();
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
+

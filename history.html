@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan History - WebAppScanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">WebApp<span class="highlight">Scanner</span></a>
+                <a href="/scan" class="btn btn-primary">New Scan</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="history-container">
+            <h2>Scan History</h2>
+
+            {% if history %}
+                {% for scan in history %}
+                    <details class="history-item">
+                        <summary>
+                            <span class="history-url">{{ scan.url }}</span>
+                            <span class="history-date">{{ scan.scan_date }}</span>
+                        </summary>
+                        <div class="history-details">
+                            
+                            <!-- CORRECTED: SQL Injection Result -->
+                            <div class="result-card {{ scan.sql_injection.severity }}">
+                                <h4>SQL Injection</h4>
+                                <p><strong>Finding:</strong> {{ scan.sql_injection.finding }}</p>
+                                <p><strong>Details:</strong> {{ scan.sql_injection.details }}</p>
+                                <p><strong>Recommendation:</strong> {{ scan.sql_injection.recommendation }}</p>
+                            </div>
+
+                            <!-- CORRECTED: XSS Result -->
+                            <div class="result-card {{ scan.xss.severity }}">
+                                <h4>Cross-Site Scripting (XSS)</h4>
+                                <p><strong>Finding:</strong> {{ scan.xss.finding }}</p>
+                                <p><strong>Details:</strong> {{ scan.xss.details }}</p>
+                                <p><strong>Recommendation:</strong> {{ scan.xss.recommendation }}</p>
+                            </div>
+
+                            <!-- CORRECTED: Security Headers Result -->
+                            <div class="result-card {{ scan.headers.severity }}">
+                                <h4>Security Headers</h4>
+                                <p><strong>Finding:</strong> {{ scan.headers.finding }}</p>
+                                <p><strong>Details:</strong> {{ scan.headers.details }}</p>
+                                <p><strong>Recommendation:</strong> {{ scan.headers.recommendation }}</p>
+                            </div>
+                            
+                            <!-- CORRECTED: SSL/TLS Certificate Result -->
+                            <div class="result-card {{ scan.ssl_cert.severity }}">
+                                <h4>SSL/TLS Certificate</h4>
+                                <p><strong>Finding:</strong> {{ scan.ssl_cert.finding }}</p>
+                                <p><strong>Details:</strong> {{ scan.ssl_cert.details }}</p>
+                                <p><strong>Recommendation:</strong> {{ scan.ssl_cert.recommendation }}</p>
+                            </div>
+
+                            <!-- CORRECTED: Open Ports Result -->
+                            <div class="result-card {{ scan.open_ports.severity }}">
+                                <h4>Open Ports</h4>
+                                <p><strong>Finding:</strong> {{ scan.open_ports.finding }}</p>
+                                <p><strong>Details:</strong> {{ scan.open_ports.details }}</p>
+                                <p><strong>Recommendation:</strong> {{ scan.open_ports.recommendation }}</p>
+                            </div>
+
+                            <!-- HTTP Status Code Result -->
+                            <div class="result-card info">
+                                <h4>HTTP Status Code</h4>
+                                <p><strong>Finding:</strong> The server returned a status code of {{ scan.status_code }}.</p>
+                            </div>
+
+                        </div>
+                    </details>
+                {% endfor %}
+            {% else %}
+                <div class="no-history">
+                    <p>You haven't run any scans yet.</p>
+                    <a href="/scan" class="btn btn-primary">Start Your First Scan</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+</body>
+</html>
+

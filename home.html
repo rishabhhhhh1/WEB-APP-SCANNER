@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAppScanner - Professional Security Scanning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">WebApp<span class="highlight">Scanner</span></a>
+                <ul class="nav-links">
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="/history">History</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <a href="/login" class="btn btn-secondary">Login</a>
+                    <a href="/signup" class="btn btn-tertiary">Sign Up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="container">
+            <div class="hero-section">
+                <div class="hero-text">
+                    <h1>Scan for threats. <br><span class="highlight">Secure your reality.</span></h1>
+                    <p>
+                        An automated scanner to proactively identify common web vulnerabilities 
+                        before they are exploited. Get clear, actionable insights to strengthen your security posture.
+                    </p>
+                    <a href="/scan" class="btn btn-primary">Get Your Free Scan Report</a>
+                </div>
+                <div class="hero-image">
+                    <svg class="security-shield" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f0b90b;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#e8a800;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#shieldGradient)" d="M50,2 L90,25 L90,65 C90,85 50,100 50,100 C50,100 10,85 10,65 L10,25 Z"/>
+                        <polyline class="checkmark" points="30,55 45,70 70,40" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="section section-light">
+            <div class="container">
+                <h2>How It <span class="highlight">Works</span></h2>
+                <div class="how-it-works-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Enter URL</h3>
+                        <p>Provide the full URL of the web application you want to scan.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Run Scan</h3>
+                        <p>Our engine tests for SQLi, XSS, header issues, and more.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Get Report</h3>
+                        <p>Receive a clear report with findings, severity, and fix recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="container">
+                <h2>Core <span class="highlight">Features</span></h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <h3>SQL Injection Detection</h3>
+                        <p>Identifies flaws that could lead to data breaches by testing for common and blind SQLi vulnerabilities.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </div>
+                        <h3>Cross-Site Scripting (XSS)</h3>
+                        <p>Checks for reflected XSS vulnerabilities to prevent malicious scripts from being injected into your site.</p>
+                    </div>
+                     <div class="feature-card">
+                        <div class="feature-icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <h3>SSL Certificate Validation</h3>
+                        <p>Ensures your SSL/TLS certificate is valid and properly configured to maintain a secure, encrypted connection.</p>
+                    </div>
+                     <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M12 2a4 4 0 0 0-4 4v1a2 2 0 0 0-2 2v3h12v-3a2 2 0 0 0-2-2V6a4 4 0 0 0-4-4z"></path><path d="M10 16v-1a2 2 0 1 1 4 0v1"></path><path d="M12 22a2.5 2.5 0 0 0 2.5-2.5V17a2.5 2.5 0 0 0-5 0v2.5A2.5 2.5 0 0 0 12 22z"></path></svg>
+                        </div>
+                        <h3>Security Header Analysis</h3>
+                        <p>Verifies the presence of crucial security headers to protect against clickjacking and other common attacks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-light">
+            <div class="container">
+                <h2>Why <span class="highlight">Choose Us?</span></h2>
+                <div class="why-choose-us-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        </div>
+                        <h3>Actionable Insights</h3>
+                        <p>We provide clear, jargon-free explanations and concrete recommendations to help you fix vulnerabilities fast.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                        </div>
+                        <h3>Proactive Security</h3>
+                        <p>Don't wait for an attack. Our scanner helps you adopt a proactive security mindset by finding flaws before they're exploited.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
+                        </div>
+                        <h3>Blazing Fast</h3>
+                        <p>Our efficient scanning engine delivers comprehensive results in seconds, not minutes, respecting your time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section testimonials-section">
+            <div class="container">
+                <h2>What Our <span class="highlight">Users Say</span></h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p>"WebAppScanner gave me a clear, actionable report in seconds. It's the perfect first step for any developer looking to tighten up their security."</p>
+                        <span class="testimonial-author">- Alex Johnson, Full-Stack Developer</span>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Finally, a straightforward security tool that doesn't require a PhD to understand. The PDF reports are a fantastic feature for sharing with my team."</p>
+                        <span class="testimonial-author">- Samantha Lee, Project Manager</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="section section-light">
+            <div class="container">
+                <h2>Frequently Asked <span class="highlight">Questions</span></h2>
+                <div class="faq-container">
+                    <details class="faq-item">
+                        <summary>Is this scanner free to use?</summary>
+                        <p>Yes, the basic scan is completely free. We believe everyone deserves to have a secure presence on the web.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>How accurate are the scan results?</summary>
+                        <p>Our scanner is designed to detect common vulnerabilities with high accuracy. However, for a comprehensive security audit, we always recommend a manual penetration test by a certified professional.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Do you store my website data?</summary>
+                        <p>No, we respect your privacy. All scan data is processed in real-time and stored only in your local browser session for the history feature. We do not save your scan results on our servers.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta-section">
+            <div class="container">
+                <h2>Ready to Secure Your Application?</h2>
+                <p>Take the first step towards a stronger security posture. Get your free, instant security report now.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 WebAppScanner. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Gemini Assistant Chatbot -->
+    <div id="chat-container" class="chat-container">
+        <div id="chat-header" class="chat-header">
+            <h3>Security Assistant</h3>
+            <button id="close-chat" class="close-chat-btn">&times;</button>
+        </div>
+        <div id="chat-messages" class="chat-messages">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Ask about web security...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+    <button id="chat-toggle-btn" class="chat-toggle-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </button>
+    <!-- End Gemini Assistant -->
+
+    <script>
+    // --- Gemini Assistant Logic ---
+    const chatContainer = document.getElementById('chat-container');
+    const chatToggleBtn = document.getElementById('chat-toggle-btn');
+    const closeChatBtn = document.getElementById('close-chat');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    // Toggle chat window visibility
+    chatToggleBtn.addEventListener('click', () => {
+        chatContainer.classList.toggle('open');
+    });
+
+    closeChatBtn.addEventListener('click', () => {
+        chatContainer.classList.remove('open');
+    });
+
+    // Function to add a message to the chat window
+    function addMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', `${sender}-message`);
+        messageElement.innerHTML = message.replace(/\n/g, '<br>');
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to handle sending a message
+    async function sendMessage() {
+        const userMessage = chatInput.value.trim();
+        if (userMessage === '') return;
+
+        addMessage('user', userMessage);
+        chatInput.value = '';
+        addMessage('bot', 'Thinking...'); // Show a thinking indicator
+
+        try {
+            // This now calls our own server's backend route
+            const response = await fetch('/ask_assistant', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            });
+
+            // Remove the "Thinking..." message
+            chatMessages.removeChild(chatMessages.lastChild);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                // Display the specific error from the backend
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            // CORRECTED LINE: Check for 'response' instead of 'reply'
+            if (data.response) { 
+                 addMessage('bot', data.response);
+            } else {
+                 addMessage('bot', "Sorry, I received an empty response. Please try again.");
+            }
+
+        } catch (error) {
+            // Remove the "Thinking..." message and show a user-friendly error
+            chatMessages.removeChild(chatMessages.lastChild);
+            // Use a more generic message for the user, while logging the specific error for debugging
+            addMessage('bot', `Sorry, something went wrong. Please try again later.`);
+            console.error('Error with assistant:', error);
+        }
+    }
+
+    // Event listeners
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Add a welcome message
+    addMessage('bot', 'Hello! I am your security assistant. Ask me anything about web vulnerabilities or how this scanner works.');
+
+</script>
+
+</body>
+</html>
+
